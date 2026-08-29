@@ -1,0 +1,319 @@
+/* Berlin, As Found — a plain sheet of paper, photographs thrown across it. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400&family=Space+Mono:wght@400&family=Caveat:wght@500;600;700&family=Poppins:wght@500&display=swap');
+
+:root{
+  --paper:      #f1ebdd;
+  --paper-2:    #e9e1cf;
+  --ink:        #26221c;
+  --ink-soft:   #55503f;
+  --rule:       #cabf9f;
+  --tape:       rgba(255, 250, 224, .55);
+  --shadow:     rgba(38, 34, 28, .22);
+  --hand:       'Caveat', 'Segoe Script', cursive;
+  --scrim:      rgba(18, 16, 12, .82);
+
+  --gap: clamp(18px, 3vw, 40px);
+  font-size: 16px;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body{
+  background:
+    radial-gradient(ellipse at 20% -10%, rgba(255,255,255,.35), transparent 55%),
+    radial-gradient(ellipse at 90% 110%, rgba(0,0,0,.06), transparent 50%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.015) 0px, rgba(0,0,0,.015) 1px, transparent 1px, transparent 3px),
+    var(--paper);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* paper grain, no external image */
+body::before{
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* masthead */
+
+#masthead{
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: clamp(48px, 8vw, 88px) 24px clamp(24px, 4vw, 40px);
+}
+
+#work-title{
+  margin: 0;
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: clamp(38px, 7vw, 64px);
+  letter-spacing: .01em;
+}
+
+#work-sub{
+  margin: 0;
+  font-family: 'Poppins', ui-sans-serif, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* the scatter */
+
+#paper{
+  position: relative;
+}
+
+#scatter{
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 48px);
+}
+
+.print{
+  position: absolute;
+  transform-style: preserve-3d;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transform:
+    translate3d(0,0,0)
+    scale(var(--scale, 1))
+    rotate(var(--rot, 0deg))
+    translateZ(var(--lift, 0px));
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), filter .05s linear, opacity .3s ease;
+  filter: drop-shadow(0 6px 10px var(--shadow));
+  will-change: transform;
+}
+
+.print.is-lifted{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.print:hover,
+.print:focus-visible{
+  --lift: 18px;
+  filter: drop-shadow(0 24px 26px rgba(38, 34, 28, .45));
+  z-index: 50 !important;
+}
+
+.print:focus-visible{
+  outline: none;
+}
+
+.print.dragging{
+  --lift: 34px;
+  cursor: grabbing;
+  transition: filter .05s linear;
+  filter: drop-shadow(0 30px 34px rgba(38, 34, 28, .5));
+  z-index: 999 !important;
+}
+
+.print-frame{
+  background: #fdfcf8;
+  padding: 8px 8px 30px;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+
+.print-photo{
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 3px;
+  background: linear-gradient(155deg, #d9d2bd, #c7bfa4 55%, #d9d2bd);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.print-photo.is-placeholder{
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 8px;
+  font-family: 'Space Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(38,34,28,.4);
+  border: 1px dashed rgba(38,34,28,.22);
+}
+
+.print-caption{
+  position: absolute;
+  left: 4px; right: 4px; bottom: 3px;
+  font-family: var(--hand);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+  color: var(--ink-soft);
+  text-align: center;
+  transform: rotate(var(--cap-rot, -1.5deg));
+}
+
+.print.size-sm .print-frame{ width: clamp(125px, 13.5vw, 180px); }
+.print.size-md .print-frame{ width: clamp(165px, 18vw, 235px); }
+.print.size-lg .print-frame{ width: clamp(210px, 23vw, 300px); }
+
+/* pin/tape colour is set in script.js */
+.pin-dot{
+  position: absolute;
+  top: -8px; left: 50%;
+  width: 13px; height: 13px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  box-shadow: 0 3px 5px rgba(0,0,0,.3);
+}
+
+.tape-strip{
+  position: absolute;
+  width: 46px; height: 20px;
+  border-radius: 4px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,.4) 0 3px,
+    transparent 3px 8px
+  );
+  background-blend-mode: overlay;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1), inset 0 0 0 1px rgba(255,255,255,.25);
+}
+.tape-strip.a{ top: -10px; left: -12px; }
+.tape-strip.b{ top: -10px; right: -12px; }
+
+/* the viewer */
+
+#viewer{
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  pointer-events: none;
+  perspective: 1800px;
+}
+
+#viewer.is-open{
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#viewer-scrim{
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+#viewer.is-open #viewer-scrim{ opacity: 1; }
+
+#viewer-card{
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(92vw, 800px);
+  max-height: 92vh;
+  background: #fdfcf8;
+  padding: clamp(14px, 2.4vw, 24px) clamp(14px, 2.4vw, 24px) clamp(22px, 4vw, 40px);
+  border-radius: 8px;
+  box-shadow: 0 40px 90px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.04);
+  transform-style: preserve-3d;
+  transform:
+    rotateX(var(--tiltx, 0deg))
+    rotateY(var(--tilty, 0deg));
+  transition: transform .3s cubic-bezier(.2,.8,.2,1);
+  outline: none;
+}
+
+#viewer-photo{
+  width: min(74vw, 720px);
+  height: min(58vh, 560px);
+  background-size: cover;
+  background-position: center;
+  border-radius: 2px;
+  background-color: #d9d2bd;
+}
+
+#viewer-text{
+  margin: 22px 4px 0;
+  text-align: center;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .35s ease .1s, transform .35s ease .1s;
+}
+
+#viewer.is-open #viewer-text{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#viewer-place{
+  margin: 0;
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: clamp(20px, 2.8vw, 28px);
+  letter-spacing: .02em;
+  color: var(--ink);
+}
+
+#viewer-line{
+  margin: .2em 0 0;
+  font-family: var(--hand);
+  font-weight: 500;
+  font-size: clamp(19px, 2.8vw, 26px);
+  color: var(--ink-soft);
+  max-width: 38ch;
+}
+
+#viewer-meta{
+  margin: .7em 0 0;
+  font-family: 'Space Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--ink-soft);
+  opacity: .7;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .print, #viewer-scrim, #viewer-text{
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 640px){
+  .print{ transition: filter .35s ease; }
+  #viewer{ perspective: none; }
+  #viewer-card{ transition: none; }
+  #viewer-photo{ width: 92vw; height: 46vh; }
+}

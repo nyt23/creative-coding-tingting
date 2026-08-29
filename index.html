@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Berlin, As Found</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main id="paper">
+    <header id="masthead">
+      <h1 id="work-title"></h1>
+      <p id="work-sub"></p>
+    </header>
+
+    <div id="scatter" role="list"></div>
+  </main>
+
+  <div id="viewer" aria-hidden="true">
+    <div id="viewer-scrim"></div>
+    <figure id="viewer-card" tabindex="-1">
+      <div id="viewer-photo"></div>
+      <figcaption id="viewer-text">
+        <p id="viewer-place"></p>
+        <p id="viewer-line"></p>
+        <p id="viewer-meta"></p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <script src="photos.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
