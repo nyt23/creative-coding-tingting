@@ -1,6 +1,6 @@
 # Berlin, As Found
 
-<video src="media/demo.mp4" autoplay loop muted playsinline controls width="600"></video>
+https://github.com/user-attachments/assets/2196ebb4-d411-4720-a568-4e587794ddf9
 
 A creative coding module project: a plain sheet of paper, photographs
 scattered across it. Drag a photo anywhere you like, or click one to
